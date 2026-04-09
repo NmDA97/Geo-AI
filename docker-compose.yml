@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:15-3.3
+    # platform: linux/arm64 # Generally auto-detected, but good practice if issues arise. 
+    # The official postgis image supports arm64.
+    restart: always
+    environment:
+      POSTGRES_USER: geoai
+      POSTGRES_PASSWORD: geoai_password
+      POSTGRES_DB: geodb
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - geoai-net
+
+  # Backend Placeholder - setup in Phase 1/3
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: geoai-backend
+    volumes:
+      - ./backend:/app
+      - ./data:/data
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://geoai:geoai_password@db:5432/geodb
+      - DATA_DIR=/data
+    depends_on:
+      - db
+    networks:
+      - geoai-net
+    # platform: linux/arm64
+
+  # Frontend Placeholder - setup in Phase 4
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: geoai-frontend
+    ports:
+      - "3000:5173" # Vite default
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - geoai-net
+    # platform: linux/arm64
+
+volumes:
+  pg_data:
+
+networks:
+  geoai-net:
+    driver: bridge

@@ -1,0 +1,33 @@
+{
+  "geometric": {
+    "mean_footprint": 124.32866427683375,
+    "median_footprint": 82.02042145064112,
+    "total_built_area": 19186275.142536707,
+    "large_buildings_count": 3240
+  },
+  "risk": {
+    "total_buildings": 154319,
+    "buildings_at_risk": 13,
+    "risk_percentage": 0.008424108502517513,
+    "flood_area_sqkm": 0.3300282219975319
+  },
+  "schools": {
+    "total_schools": 70,
+    "schools_at_risk": 0,
+    "risk_percentage": 0.0,
+    "school_types": {
+      "school": 70
+    }
+  },
+  "waterways": {
+    "total_segments": 1,
+    "total_water_area_sqkm": 3.344218096498547
+  },
+  "infrastructure": {
+    "total_road_length_km": 1029
+  },
+  "metadata": {
+    "study_area": "Colombo Expanded (Kelaniya & Angoda)",
+    "last_updated": "2026-04-09T14:10:55.734067"
+  }
+}

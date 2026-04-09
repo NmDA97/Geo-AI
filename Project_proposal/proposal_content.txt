@@ -1,0 +1,73 @@
+Adaptive Geo-AI Agent for Multimodal Urban Planning and Risk Assessment 
+ 
+	•	Name: H A N M Hettiarachchi
+	•	Index: 258727X
+
+	•	Problem Statement
+Sri Lanka is currently undergoing a massive urban transformation, but our planning systems seem stuck in the past. From what I’ve observed traveling around the country, the lack of a smart, data-driven approach to new constructions isn't just a local issue; it’s a nationwide headache. Whether it’s a developing suburb in the outskirts or a major city center, we see buildings popping up in areas that are environmentally sensitive or technically unsuitable.
+However, the situation in Colombo North specifically in wards like Modara, Grandpass, and Mattakkuliya is where this crisis is most visible. This area is the "perfect storm" for an urban planner's nightmare: it has some of the highest building densities in the country and is simultaneously sitting in a high-risk flood zone of the Kelani River.
+Right now, the process for a developer or a common citizen to check site suitability is frustratingly manual. You have to hunt down specific UDA zoning PDFs to check for land-use rules, then dig through NBRO safety guidelines to see if the soil or elevation is even safe for building. After all that, you still have to overlay this information mentally against flood hazard maps. It’s slow, it’s confusing, and it leaves way too much room for human error.
+I’ve decided to use Colombo North as my pilot area because if the system can handle the complexity of this region, it can eventually be scaled to work anywhere in Sri Lanka. My project aims to bridge this gap by building a GeoAI Agent. Instead of a person manually juggling maps and legal documents, they can just ask a question in plain English. The system will then do the heavy lifting scanning spatial data and government regulations to provide a recommendation that is both legally sound and scientifically backed.
+
+	•	Data Sources
+The project utilizes real-world datasets to ensure practical validity:
+	•	Vector Data: OpenStreetMap (OSM) via OSMnx and Pyrosm for building footprints, road networks, and land-use polygons in Colombo North.
+
+	•	Regulatory Knowledge: Official PDF documents of the "Colombo Commercial City Development Plan 2019-2030" (UDA) and NBRO building safety guidelines.
+	•	Environmental Hazards: Flood inundation raster maps (GeoTIFF/PDF) from the RiskInfo/ HDX  Sri Lanka portal and hydrograph data from Google Flood Hub
+
+	•	Intended Methods
+I designed this project with a modular architecture to ensure it goes beyond a simple chatbot and offers real technical depth.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+A. Spatial Data Engineering
+To handle the geography accurately, I am building a dedicated spatial backend:
+	•	PostGIS Backend: I will use PostgreSQL with the PostGIS extension to run fast spatial queries like ST_DWithin and ST_Intersects to check site proximity and boundaries. 
+
+	•	Hydrological Processing: I am using Rasterio to process flood hazard GeoTIFFs. This allows the system to generate a numerical "Risk Score" for any coordinate provided by the user.
+B. Knowledge Retrieval (RAG Pipeline)
+To give the agent "legal knowledge," I am implementing a Retrieval-Augmented Generation (RAG) pipeline:
+	•	I will index the UDA and NBRO guidelines into ChromaDB.
+	•	This enables the agent to pull specific legal clauses from the original PDFs to justify its construction recommendations.
+
+
+C. Agentic Reasoning (The "Brain")
+This layer manages the logic and decision-making:
+	•	I am using the LangChain ReAct framework to build the agent.
+	•	The agent doesn't just guess; it "reasons" through a query and selects the right Python tools I’ve built like check_flood_risk() or verify_zoning() to find the answer.
+
+	•	Expected Outputs
+I intend to deliver a functional GeoAI backend that can translate natural language queries into executable spatial code. My primary goal is to ensure the system provides validated answers based on actual geography and regulations, rather than just simple text predictions.
+Unsuitable Zone Report: An automated list identifying existing residential buildings currently located in high-risk "prohibited" flood zones, as defined by NBRO/UDA guidelines.
+ 
+	•	Evaluation and Comparison
+To satisfy the requirement for "Evaluation with justification", the project will include:
+Baseline Comparison: The agent’s recommendations will be compared against a non-LLM baseline model using a traditional Multi-Criteria Decision Analysis (MCDA) Weighted Overlay.
+Quantitative Metrics: Accuracy of siting decisions against ground-truth planning data, system latency per query, and hallucination rates in regulatory citations.
+ 
+	•	Key Risks and Assumptions
+Risk (Data Scarcity): Official flood maps may only be available in static PDF formats.
+Mitigation: Use QGIS for manual georeferencing and digitizing of PDF layers into structured GeoJSON formats.
+Risk (LLM Reliability): The model may generate incorrect regulatory advice (hallucinations).
+Mitigation: Implement a "Source-Grounded" logic where the agent must provide a direct citation from the UDA/NBRO PDF knowledge base for every claim.
+Assumption: Computational power (MacBook Pro M4) is sufficient for local vector database hosting and raster processing.
+Assumption: OSM building data for Colombo North is sufficiently updated to represent current urban density.
+ 
+ 
+ 
+ 
+
+

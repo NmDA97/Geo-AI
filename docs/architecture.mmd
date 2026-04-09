@@ -1,0 +1,36 @@
+graph TD
+    subgraph Frontend [React + Vite UI]
+        UI[Dashboard UI]
+        Map[Leaflet/MapLibre Map]
+        Chat[Chat Interface]
+    end
+
+    subgraph Backend [FastAPI Server]
+        API[FastAPI Endpoints]
+        Orchestrator[LangChain Agent]
+        
+        subgraph Tools [Agent Tools]
+            T_Spatial[Spatial Query Tool]
+            T_RAG[Legal RAG Tool]
+            T_Baseline[Baseline Calculator]
+        end
+    end
+
+    subgraph Data_Layer [Data & Storage]
+        PostGIS[(PostGIS DB)]
+        Chroma[(ChromaDB Vector Store)]
+        Raster[Flood/Land Use GeoTIFFs]
+        OSM[OSM Vector Data]
+    end
+
+    UI -->|HTTP/WebSocket| API
+    API --> Orchestrator
+    Orchestrator --> T_Spatial
+    Orchestrator --> T_RAG
+    Orchestrator --> T_Baseline
+    
+    T_Spatial -->|SQL| PostGIS
+    T_Spatial -->|Read| Raster
+    T_RAG -->|Query| Chroma
+    T_Baseline -->|Read| Raster
+    T_Baseline -->|SQL| PostGIS
